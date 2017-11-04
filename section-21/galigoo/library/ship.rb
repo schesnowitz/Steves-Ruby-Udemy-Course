@@ -6,7 +6,7 @@ class Ship
 
   def initialize(galigoo_window)
     @galigoo_window = galigoo_window
-    # @image = self.class.load_image_file(galigoo_window)
+    @image = self.class.load_image_file(galigoo_window)
     @time = 6
     @x = galigoo_window.width / 2
     @y = galigoo_window.height / 2

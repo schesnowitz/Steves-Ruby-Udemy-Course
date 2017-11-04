@@ -1,0 +1,4 @@
+ruby@ruby.com
+joe@example.com
+sally@sally.io
+fred@fredville.com

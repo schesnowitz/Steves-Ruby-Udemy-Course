@@ -1,0 +1,3 @@
+class SingleLaser < BaseLaser
+  
+end

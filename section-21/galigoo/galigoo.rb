@@ -1,9 +1,10 @@
 require 'rubygems'
 require 'gosu'
+require_relative 'library/weapons_manifest'
 require_relative 'library/z_order'
 require_relative 'library/ship'
 
-class Galigoo < Gosu::Window
+class Galigoo < Gosu::Window 
   def initialize
     super 640, 480
     self.caption = "Galigoo"
@@ -18,6 +19,15 @@ class Galigoo < Gosu::Window
   def draw
     @background.draw(0, 0, ZOrder::BACKGROUND)
     @ship.draw
+  end
+
+  def button_down(id)
+    case id
+      when Gosu::KbQ, Gosu::KbEscape
+        close
+      else
+        @ship.button_down(id)
+      end
   end
 end
 

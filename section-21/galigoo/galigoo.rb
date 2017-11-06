@@ -9,6 +9,7 @@ class Galigoo < Gosu::Window
     super 640, 480
     self.caption = "Galigoo"
     @background = Gosu::Image.new('media_files/background.png')
+    @star_animation = Gosu::Image::load_tiles(self, "media_files/star.png", 25 , 25, false)
     @ship = Ship.new(self)
     @sounds = []
   end
@@ -25,6 +26,15 @@ class Galigoo < Gosu::Window
   def draw
     @background.draw(0, 0, ZOrder::BACKGROUND)
     @ship.draw
+
+    @star_animation.each_with_index do |tile, i|
+      tile.draw(100 + (40 * i), 50, ZOrder::STAR)
+    end
+    image = @star_animation[(Gosu::milliseconds / 100) % @star_animation.size]
+    image.draw(100, 220, ZOrder::STAR)
+    image.draw(100, 220, ZOrder::STAR, 2.0, 2.0, 0xff_ff0000)
+    image.draw_rot(100, 340, ZOrder::STAR, -90, 0.5, 0.5, 3.0, 3.0, 0xff_00ffff)
+
   end
 
   def button_down(id)

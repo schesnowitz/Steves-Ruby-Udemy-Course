@@ -6,3 +6,6 @@ http://www.rubydoc.info/github/gosu/gosu/master/Gosu.draw_quad
 
 # Colors
 http://www.rubydoc.info/github/gosu/gosu/Gosu/Color
+
+# More audio
+http://www.mediacollege.com/downloads/sound-effects/alien/

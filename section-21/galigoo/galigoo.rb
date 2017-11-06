@@ -10,8 +10,14 @@ class Galigoo < Gosu::Window
     self.caption = "Galigoo"
     @background = Gosu::Image.new('media_files/background.png')
     @ship = Ship.new(self)
+    @sounds = []
   end
   
+
+  def play_laser(sound, frequency = 1.0, volume = 1.0)
+    @sounds << sound.play(frequency, volume)
+  end
+
   def update
     @ship.update
   end

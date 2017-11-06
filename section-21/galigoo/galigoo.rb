@@ -40,7 +40,7 @@ class Galigoo < Gosu::Window
     max_stars = 12
     prob = 2
 
-    if rand(100) < prob and @star.size < max_stars then
+    if rand(100) < prob and @stars.size < max_stars then
       @stars.push(Star.new(self, [@base_speed, max_speed].min))
     end
   end  

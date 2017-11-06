@@ -26,29 +26,18 @@ class Star
     @speed = speed
   end
 
-  # def draw
-  #   image = @star_animation[(Gosu::milliseconds / 100) % @star_animation.size]
-  #   image.draw_rot(@x, @y, ZOrder::STAR, -90, 0.5, 0.5, @size, @size, @color)
-  # end
-
-  # def update
-  #   @y = @y + @speed
-  #   if (@y - height) > @galigoo_window.height
-  #     @galigoo_window.remove_star(self)
-  #   end
-  # end  
-
   def draw
-    img = @staranim[(Gosu::milliseconds / 100) % @staranim.size]
-    img.draw_rot(@x, @y, ZOrder::STAR, -90, 0.5, 0.5, @size, @size, @color)
+    image = @star_animation[(Gosu::milliseconds / 100) % @star_animation.size]
+    image.draw_rot(@x, @y, ZOrder::STAR, -90, 0.5, 0.5, @size, @size, @color)
   end
 
   def update
-    @y += @speed
-    if (@y - height) > @galigoo_galigoo_window.height
-      @galigoo_galigoo_window.remove_star(self)
+    @y = @y + @speed
+    if (@y - height) > @galigoo_window.height
+      @galigoo_window.remove_star(self)
     end
-  end
+  end  
+
 
   def radius
     (19.0 * @size) / 2.0

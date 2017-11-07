@@ -1,5 +1,7 @@
 class Ship
 
+  attr_accessor :time, :x, :y
+
   def self.load_image_file(galigoo_window)
     @ship_image_file = Gosu::Image.new('media_files/ship.png')
   end
@@ -13,6 +15,13 @@ class Ship
     @x_offset = @image.width / 2
     @y_offset = @image.height / 2
     @lasers = []
+    reset
+  end
+
+  def reset
+    @exploding = false
+    @x = @galigoo_window.width / 2
+    @y = 400
   end
 
   def draw
@@ -86,9 +95,34 @@ class Ship
   end
 end
 
+  def radius
+    @radius = @image.width / 2
+  end
+
+  def destroy
+    @exploding = true
+
+  end
+
+  def can_collide?
+    true
+  end
+
   def fire_laser(laser)
     @lasers << laser
     laser.fire
+  end
+
+  def remove_laser(laser)
+    @lasers.delete(laser)
+  end
+
+  def collide?(thing)
+    if can_collide? && Utilities.collide?(self, thing)
+      self.destroy
+      return true
+    end
+    @lasers.any? { |laser| laser.collide?(thing) }
   end
 
 end

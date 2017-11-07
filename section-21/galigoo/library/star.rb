@@ -26,6 +26,10 @@ class Star
     @speed = speed
   end
 
+  def destroy
+    @galigoo_window.remove_star(self)
+  end
+
   def draw
     image = @star_animation[(Gosu::milliseconds / 100) % @star_animation.size]
     image.draw_rot(@x, @y, ZOrder::STAR, -90, 0.5, 0.5, @size, @size, @color)
@@ -41,5 +45,10 @@ class Star
 
   def radius
     (19.0 * @size) / 2.0
+  end
+
+  def self.collide?(thing1, thing2)
+    distance = Gosu::distance(thing1.x, thing1.y, thing2.x, thing2.y)
+    distance < (thing1.radius + thing2.radius)
   end
 end

@@ -32,6 +32,23 @@ class Galigoo < Gosu::Window
       star.update
     end
     populate_stars
+    check_collisions
+  end
+
+  def check_collisions
+    destroyed = []
+    @stars.each do |star|
+      if @ship.collide?(star)
+        destroyed << star
+      end
+    end
+    destroyed.each do |star|
+      star.destroy
+    end
+  end
+
+  def remove_star(star)
+    @stars.delete(star)
   end
   
   def populate_stars

@@ -27,6 +27,7 @@ class Star
   end
 
   def destroy
+    @galigoo_window.play_sound(@beep, 0.5, (1.0 / @size.to_f))
     @galigoo_window.remove_star(self)
   end
 

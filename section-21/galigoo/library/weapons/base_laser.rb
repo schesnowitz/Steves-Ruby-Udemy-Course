@@ -46,11 +46,11 @@ class BaseLaser
   end
 
   def fire
-    play_laser
+    play_sound
   end
 
-  def play_laser
-    @galigoo_window.play_laser( @laser_sound, @laser_sound_frequency, @laser_volume )
+  def play_sound
+    @galigoo_window.play_sound( @laser_sound, @laser_sound_frequency, @laser_volume )
   end
 
   def collide?(thing)

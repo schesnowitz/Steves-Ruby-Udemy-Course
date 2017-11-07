@@ -6,9 +6,14 @@ class Ship
     @ship_image_file = Gosu::Image.new('media_files/ship.png')
   end
 
+  def self.load_explosion_sound(galigoo_window)
+    @explosion_sound_file = Gosu::Sample.new('media_files/explosion.ogg')
+  end
+
   def initialize(galigoo_window)
     @galigoo_window = galigoo_window
     @image = self.class.load_image_file(galigoo_window)
+    @explosion = self.class.load_explosion_sound(galigoo_window)
     @time = 6
     @x = galigoo_window.width / 2
     @y = galigoo_window.height / 2
@@ -25,18 +30,30 @@ class Ship
   end
 
   def draw
-    @image.draw_rot(@x, @y, 0, 0)
+    if @exploding
+      c1 = Gosu.Color.new(0xff_ff0000)
+      c1.alpha = @exploding_counter
+      c1.green = (@exploding_counter / 2)
+      scale = 1.5 + (((200 - @exploding_counter) / 200.0) * 0.75)
+      @image.draw_rot(@x, @y, ZOrder::SHIP, 0, 0.5, 0.5, scale, scale, c1)
 
-    # can be written like this
-    # @lasers.each { |laser| laser.draw }
+    elsif @spawning
+      c1 = Gosu.draw_rot(@x, @y, ZOrder::SHIP, 0 , 0.5, 0.5, 1, 1, c1)
+    else
+      @image.draw_rot(@x, @y, ZOrder::SHIP, 0)
+      # can be written like this
+      # @lasers.each { |laser| laser.draw }
 
-    # or like this...
-    @lasers.each do |laser|
-      laser.draw
-    end
+      # or like this...
+      @lasers.each do |laser|
+        laser.draw
+      end
+    end 
   end 
 
   def update 
+    update_explosion
+    update_spawning
     move
     # can be written like this
     # @lasers.each { |laser| laser.update }
@@ -46,7 +63,34 @@ class Ship
     end
   end 
 
+  def update_explosion
+    if @exploding then
+      @exploding_counter -= 1
+      if @exploding_counter <= 0 then
+        @exploding = false
+        self.spawn
+      end
+    end
+  end
+
+  def update_spawning
+    if @spawning then
+      @spawning_counter = 100
+      @spawning_counter -= 1
+      if @spawning_counter < 0 then
+        @spawning = false
+      end
+    end  
+  end
+
+  def spawn
+    @spawning = true
+    @spawning_counter = nil
+    reset
+  end
+
   def move
+    return if @exploding
     if @galigoo_window.button_down? Gosu::KB_LEFT or @galigoo_window::button_down? Gosu::GP_LEFT
       move_left
     end
@@ -100,12 +144,13 @@ end
   end
 
   def destroy
+    @galigoo_window.play_sound(@exploding)
     @exploding = true
-
+    @exploding_counter = 200
   end
 
   def can_collide?
-    true
+    !@spawning && !@exploding
   end
 
   def fire_laser(laser)

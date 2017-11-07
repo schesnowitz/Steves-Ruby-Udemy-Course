@@ -22,7 +22,7 @@ class Galigoo < Gosu::Window
     @stars = []
   end
 
-  def play_laser(sound, frequency = 1.0, volume = 1.0)
+  def play_sound(sound, frequency = 1.0, volume = 1.0)
     @sounds << sound.play(frequency, volume)
   end
 

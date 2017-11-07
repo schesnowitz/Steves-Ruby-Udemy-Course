@@ -31,14 +31,15 @@ class Ship
 
   def draw
     if @exploding
-      c1 = Gosu.Color.new(0xff_ff0000)
+      c1 = Gosu::Color.new(0xff_ff0000)
       c1.alpha = @exploding_counter
       c1.green = (@exploding_counter / 2)
       scale = 1.5 + (((200 - @exploding_counter) / 200.0) * 0.75)
       @image.draw_rot(@x, @y, ZOrder::SHIP, 0, 0.5, 0.5, scale, scale, c1)
 
     elsif @spawning
-      c1 = Gosu.draw_rot(@x, @y, ZOrder::SHIP, 0 , 0.5, 0.5, 1, 1, c1)
+      c1 = Gosu::Color.new(0xcc0099ff)
+      @image.draw_rot(@x, @y, ZOrder::SHIP, 0, 0.5, 0.5, 1, 1, c1)
     else
       @image.draw_rot(@x, @y, ZOrder::SHIP, 0)
       # can be written like this
@@ -144,7 +145,7 @@ end
   end
 
   def destroy
-    @galigoo_window.play_sound(@exploding)
+    @galigoo_window.play_sound(@explosion)
     @exploding = true
     @exploding_counter = 200
   end

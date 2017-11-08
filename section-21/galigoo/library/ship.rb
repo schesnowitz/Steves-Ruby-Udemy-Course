@@ -139,6 +139,8 @@ class Ship
     case key_press
   when Gosu::KbSpace
     fire_laser(SingleLaser.new(@galigoo_window, self, @x, @y)) 
+  when Gosu::KbLeftAlt
+    fire_laser(DoubleLaser.new(@galigoo_window, self, @x, @y))
   end
 end
 

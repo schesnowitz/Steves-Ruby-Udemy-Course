@@ -74,9 +74,10 @@ class Ship
     end
   end
 
+
   def update_spawning
     if @spawning then
-      @spawning_counter = 100
+      @spawning_counter ||= 100
       @spawning_counter -= 1
       if @spawning_counter < 0 then
         @spawning = false
@@ -84,6 +85,7 @@ class Ship
     end  
   end
 
+ 
   def spawn
     @spawning = true
     @spawning_counter = nil

@@ -12,15 +12,34 @@ class Galigoo < Gosu::Window
     self.caption = "Galigoo"
     @background = Gosu::Image.new('media_files/background.png')
     @star_animation = Gosu::Image::load_tiles(self, "media_files/star.png", 25 , 25, false)
+    @font = Gosu::Font.new(self, Gosu::default_font_name, 25)
     @ship = Ship.new(self)
     @sounds = []
     start_game
   end
+
+  def current_level
+    (@score / 1000) + 1
+  end
   
   def start_game
+    @paused = false
+    @game_over = false
+    @life_counter = 3
     @base_speed = 0.5
     @stars = []
+    @score = 0
+    @ship.reset
   end
+
+  def new_player
+    if @life_counter > 0 then
+      @life_counter -= 1
+      @ship.spawn
+    else
+      @game_over = true
+  end
+end
 
   def play_sound(sound, frequency = 1.0, volume = 1.0)
     @sounds << sound.play(frequency, volume)
@@ -39,7 +58,8 @@ class Galigoo < Gosu::Window
     destroyed = []
     @stars.each do |star|
       if @ship.collide?(star)
-        destroyed << star
+        @score += (10 * (3.0 / star.size)).to_i
+        destroyed << star    
       end
     end
     destroyed.each do |star|
@@ -52,10 +72,10 @@ class Galigoo < Gosu::Window
   end
   
   def populate_stars
-    @base_speed = 0.5
+    @base_speed = ((current_level - 1) * 0.2) + 0.5
     max_speed = 10
-    max_stars = 12
-    prob = 2
+    max_stars = 12 + (current_level * 2)
+    prob = 2 + (current_level * 0.5)
 
     if rand(100) < prob and @stars.size < max_stars then
       @stars.push(Star.new(self, [@base_speed, max_speed].min))
@@ -64,11 +84,27 @@ class Galigoo < Gosu::Window
 
 
   def draw
+    draw_game_ui
     @background.draw(0, 0, ZOrder::BACKGROUND)
     @ship.draw
     @stars.each do |star|
       star.draw
     end
+  end
+
+  def draw_game_ui
+    @font.draw("Galigoo Score: #{@score}", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_00ffff)
+
+    text_width = @font.text_width("Level: #{current_level}")
+    @font.draw("Level: #{current_level}", (width - 20 - text_width), 10, ZOrder::UI, 1.0, 1.0, 0xff_00ffff)
+
+  end
+
+  def draw_text(text, x, y)
+    text_width = @font.text_width(text)
+    @font.text_width("Level: #{current_level}")
+    text_height = @font.height
+    @font.draw(text, (x - text_width / 2), (y - text_height / 2), ZOrder::UI, 1.0, 1.0, 0xff_00ffff)
   end
 
   def button_down(id)

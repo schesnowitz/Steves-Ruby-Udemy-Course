@@ -3,4 +3,5 @@ module ZOrder
   SHIP = 1
   LASER = 2
   STAR = 3
+  UI = 4
 end

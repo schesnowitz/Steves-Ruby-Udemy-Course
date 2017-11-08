@@ -69,7 +69,7 @@ class Ship
       @exploding_counter -= 1
       if @exploding_counter <= 0 then
         @exploding = false
-        self.spawn
+        @galigoo_window.new_player
       end
     end
   end

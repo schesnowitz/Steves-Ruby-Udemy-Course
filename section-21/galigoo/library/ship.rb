@@ -141,6 +141,8 @@ class Ship
     fire_laser(SingleLaser.new(@galigoo_window, self, @x, @y)) 
   when Gosu::KbLeftAlt
     fire_laser(DoubleLaser.new(@galigoo_window, self, @x, @y))
+  when Gosu::KbN 
+    fire_nuke
   end
 end
 
@@ -173,6 +175,10 @@ end
       return true
     end
     @lasers.any? { |laser| laser.collide?(thing) }
+  end
+
+  def fire_nuke
+    fire_laser Nuke.new(@galigoo_window, self, @x, @y)
   end
 
 end
